@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/slok/go-helm-template/helm"
+	"github.com/fireflycons/go-helm-template/helm"
 )
 
 var (

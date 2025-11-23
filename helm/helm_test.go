@@ -8,7 +8,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/slok/go-helm-template/helm"
+	"github.com/fireflycons/go-helm-template/helm"
 )
 
 func newTestChartFS() fstest.MapFS {

@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io/fs"
 
-	"github.com/slok/go-helm-template/helm"
+	"github.com/fireflycons/go-helm-template/helm"
 )
 
 // Raw embedded charts.

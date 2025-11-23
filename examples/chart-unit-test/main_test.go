@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/slok/go-helm-template/helm"
+	"github.com/fireflycons/go-helm-template/helm"
 )
 
 func TestSomeChart(t *testing.T) {

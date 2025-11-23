@@ -27,7 +27,7 @@ import (
     "fmt"
     "testing/fstest"
 
-    "github.com/slok/go-helm-template/helm"
+    "github.com/fireflycons/go-helm-template/helm"
 )
 
 // Chart data in memory.

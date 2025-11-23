@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing/fstest"
 
-	"github.com/slok/go-helm-template/helm"
+	"github.com/fireflycons/go-helm-template/helm"
 )
 
 // Template shows a basic example of how you would use helm template by using a fake chart

@@ -7,5 +7,5 @@ package gohelmtemplate
 // Blank imports help docs.
 import (
 	// Import helm package.
-	_ "github.com/slok/go-helm-template/helm"
+	_ "github.com/fireflycons/go-helm-template/helm"
 )
