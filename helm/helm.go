@@ -6,11 +6,13 @@ import (
 	"fmt"
 	"io/fs"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/chart"
 	"helm.sh/helm/v3/pkg/chart/loader"
+	"helm.sh/helm/v3/pkg/chartutil"
 	"helm.sh/helm/v3/pkg/release"
 )
 
@@ -40,6 +42,9 @@ type TemplateConfig struct {
 	// APIVersions allows a manual set of supported API Versions to be passed
 	// (for things like templating). These are ignored if ClientOnly is false.
 	APIVersions []string
+	// KubeVersion sets the kubernetes version Helm should assume for .Capabilities calls, e.g. "1.28.4"
+	// It defaults to 1.20
+	KubeVersion string
 }
 
 func (c *TemplateConfig) defaults() error {
@@ -75,6 +80,43 @@ func Template(ctx context.Context, config TemplateConfig) (string, error) {
 	client.Namespace = config.Namespace
 	client.DisableHooks = true
 	client.APIVersions = config.APIVersions
+
+	if config.KubeVersion != "" {
+		point := "0"
+		parts := strings.Split(config.KubeVersion, ".")
+
+		if len(parts) < 2 || len(parts) > 3 {
+			return "", fmt.Errorf("invalid format for KubeVersion: %s", config.KubeVersion)
+		}
+
+		_, err := strconv.Atoi(parts[0])
+
+		if err != nil {
+			return "", fmt.Errorf("invalid major version for KubeVersion: %w", err)
+		}
+
+		_, err = strconv.Atoi(parts[1])
+
+		if err != nil {
+			return "", fmt.Errorf("invalid minor version for KubeVersion: %w", err)
+		}
+
+		if len(parts) == 3 {
+			_, err := strconv.Atoi(parts[0])
+
+			if err != nil {
+				return "", fmt.Errorf("invalid point version for KubeVersion: %w", err)
+			}
+
+			point = parts[3]
+		}
+
+		client.KubeVersion = &chartutil.KubeVersion{
+			Major:   parts[0],
+			Minor:   parts[1],
+			Version: "v" + parts[0] + parts[1] + point,
+		}
+	}
 
 	// Render chart.
 	rel, err := client.Run(config.Chart.c, config.Values)
