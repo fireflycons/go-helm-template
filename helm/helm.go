@@ -108,7 +108,7 @@ func Template(ctx context.Context, config TemplateConfig) (string, error) {
 				return "", fmt.Errorf("invalid point version for KubeVersion: %w", err)
 			}
 
-			point = parts[3]
+			point = parts[2]
 		}
 
 		client.KubeVersion = &chartutil.KubeVersion{

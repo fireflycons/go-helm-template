@@ -229,6 +229,51 @@ func TestTemplate(t *testing.T) {
 			},
 			expErr: true,
 		},
+
+		"1 field kube version should not parse.": {
+			chart: func() *helm.Chart {
+				chartFS := newTestChartFS()
+				c := mustLoadChart(chartFS)
+				return c
+
+			},
+			config:       helm.TemplateConfig{ReleaseName: "test", KubeVersion: "1"},
+			expManifests: "",
+		},
+
+		"2 field kube version should parse.": {
+			chart: func() *helm.Chart {
+				chartFS := newTestChartFS()
+				c := mustLoadChart(chartFS)
+				return c
+
+			},
+			config:       helm.TemplateConfig{ReleaseName: "test", KubeVersion: "1.30"},
+			expManifests: "",
+		},
+
+		"3 field kube version should parse.": {
+			chart: func() *helm.Chart {
+				chartFS := newTestChartFS()
+				c := mustLoadChart(chartFS)
+				return c
+
+			},
+			config:       helm.TemplateConfig{ReleaseName: "test", KubeVersion: "1.30.1"},
+			expManifests: "",
+		},
+
+		"Invalid kube version should not parse.": {
+			chart: func() *helm.Chart {
+				chartFS := newTestChartFS()
+				c := mustLoadChart(chartFS)
+				return c
+
+			},
+			config:       helm.TemplateConfig{ReleaseName: "test", KubeVersion: "foo.bar"},
+			expManifests: "",
+			expErr:       true,
+		},
 	}
 
 	for name, test := range tests {
